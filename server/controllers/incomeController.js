@@ -46,3 +46,14 @@ exports.getAllIncome = async (req, res) => {
   }
 };
 
+//Delete Income source
+exports.deleteIncome = async (req, res) => {
+  try {
+    await Income.findByIdAndDelete(req.params.id);
+    res.json({ message: "Income source deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+
