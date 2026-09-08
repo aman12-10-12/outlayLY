@@ -56,4 +56,26 @@ exports.deleteIncome = async (req, res) => {
   }
 };
 
+//Download Excel
+exports.downloadIncomeExcel = async (req, res) => {
+  const userId = req.user.id;
 
+  try {
+    const income = await Income.find({ userId }).sort({ date: -1 });
+
+    //Prepare data for excel
+    const data = income.map((item) => ({
+      Source: item.source,
+      Amount: item.amount,
+      Date: item.date,
+    }));
+
+    const wb = writeXLSX.utils.book_new();
+    const ws = writeXLSX.utils.json_to_sheet(data);
+    writeXLSX.utils.book_append_sheet(wb, ws, "Income");
+    writeXLSX.writeFile(wb, "income_details.xlsx");
+    res.download("income_details.xlsx");
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
