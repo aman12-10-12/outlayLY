@@ -45,3 +45,14 @@ exports.getAllExpense = async (req, res) => {
   }
 };
 
+//Delete Expense source
+exports.deleteExpense = async (req, res) => {
+  try {
+    await Expense.findByIdAndDelete(req.params.id);
+    res.json({ message: "Expense source deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+
