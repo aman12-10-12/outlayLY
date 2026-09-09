@@ -1,3 +1,4 @@
+const writeXLSX = require("xlsx");
 const Expense = require("../models/Expense");
 
 //Add Expense source
@@ -55,4 +56,26 @@ exports.deleteExpense = async (req, res) => {
   }
 };
 
+//Download Excel
+exports.downloadExpenseExcel = async (req, res) => {
+  const userId = req.user.id;
 
+  try {
+    const expense = await Expense.find({ userId }).sort({ date: -1 });
+
+    //Prepare data for excel
+    const data = expense.map((item) => ({
+      Category: item.category,
+      Amount: item.amount,
+      Date: item.date,
+    }));
+
+    const wb = writeXLSX.utils.book_new();
+    const ws = writeXLSX.utils.json_to_sheet(data);
+    writeXLSX.utils.book_append_sheet(wb, ws, "Expense");
+    writeXLSX.writeFile(wb, "expense_details.xlsx");
+    res.download("expense_details.xlsx");
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
