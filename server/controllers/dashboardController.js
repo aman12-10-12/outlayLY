@@ -46,6 +46,39 @@ exports.getDashboardData = async (req, res) => {
       (sum, transaction) => sum + transaction.amount,
       0
     );
+
+    //Fetch last 5 transactions (income + expenses)
+    const lastTransactions = [
+      ...(await Income.find({ userId }).sort({ date: -1 }).limit(5)).map(
+        (txn) => ({
+          ...txn.toObject(),
+          type: "income",
+        })
+      ),
+      ...(await Expense.find({ userId }).sort({ date: -1 }).limit(5)).map(
+        (txn) => ({
+          ...txn.toObject(),
+          type: "expense",
+        })
+      ),
+    ].sort((a, b) => b.date - a.date); //sort latest first
+
+    //Final Response
+    res.json({
+      totalBalance:
+        (toatalIncome[0]?.total || 0) - (toatalExpense[0]?.total || 0),
+      totalIncome: toatalIncome[0]?.total || 0,
+      totalExpense: toatalExpense[0]?.total || 0,
+      last30daysExpenses: {
+        total: expensesLast30Days,
+        transactions: last30DaysExpenseTransactions,
+      },
+      last60DaysIncome: {
+        total: incomeLast60Days,
+        transaction: last60DaysIncomeTransactions,
+      },
+      recentTransactions: lastTransactions,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }
