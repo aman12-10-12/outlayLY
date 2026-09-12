@@ -17,9 +17,6 @@ const AuthLayout = ({ children }) => {
       </div>
 
       <div className="hidden md:block w-[40vw] bg-[#F0F8FF] overflow-hidden p-8 relative">
-        {/* Soft ambient blur shapes instead of solid purple/fuchsia blocks —
-            reads as calm light rather than a graphic-design accent, in
-            keeping with the neomorphic language used everywhere else. */}
         <div className="w-56 h-56 rounded-full bg-[#87CEEB]/25 blur-3xl absolute -top-10 -left-10" />
         <div className="w-64 h-64 rounded-full bg-[#00CED1]/20 blur-3xl absolute top-[35%] -right-16" />
         <div className="w-56 h-56 rounded-full bg-[#4682B4]/15 blur-3xl absolute -bottom-10 -left-10" />
