@@ -1,0 +1,115 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Poppins", sans-serif;
+  --breakpoint-3xl: 1920px;
+
+  /* Brand primary switched from violet (#875cf5) to the app's actual blue —
+     anything still referencing bare `bg-primary`/`text-primary` now falls
+     back to something on-brand instead of leftover purple. */
+  --color-primary: #4682b4;
+
+  /* Named tokens for the four category palettes used across the app, so
+     new components can reach for e.g. bg-brand-teal instead of writing out
+     bg-[#159089] every time. Existing files using arbitrary hex values
+     still work fine — this is additive, not a required migration. */
+  --color-brand-blue: #4682b4;
+  --color-brand-blue-light: #87ceeb;
+  --color-brand-blue-pale: #f0f8ff;
+
+  --color-brand-teal: #159089;
+  --color-brand-teal-light: #00ced1;
+  --color-brand-teal-pale: #e0ffff;
+
+  --color-brand-pink: #e0177e;
+  --color-brand-pink-light: #ff69b4;
+  --color-brand-pink-pale: #fff0f5;
+
+  --color-brand-lavender: #8b5fa8;
+  --color-brand-lavender-light: #dda0dd;
+  --color-brand-lavender-pale: #f1eefb;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-display);
+  }
+
+  body {
+    /* Was #fcfbfc (an unrelated warm grey) — matched to the blue canvas
+       every page already renders on top of, so there's no color mismatch
+       in the brief moment before a page's own background paints. */
+    background-color: #f7fbff;
+    overflow: auto;
+  }
+}
+
+/* Neomorphic rebuilds of the shared component classes. These act as a
+   fallback for any component that still references them directly instead
+   of the inline Tailwind classes used in the files already migrated —
+   same blue-neutral shell (bg + dual soft shadow, no borders) used
+   everywhere else, with a real pressed/inset state on click instead of a
+   flat color swap. */
+
+.input-box {
+  @apply w-full flex items-center gap-3 text-sm text-slate-700 bg-brand-blue-pale rounded-2xl px-4 py-3 mb-4 mt-1 outline-none transition-shadow duration-200;
+  box-shadow: inset 4px 4px 9px rgba(70, 130, 180, 0.22),
+    inset -4px -4px 9px rgba(255, 255, 255, 0.85);
+}
+
+.input-box:focus-within {
+  box-shadow: inset 4px 4px 9px rgba(70, 130, 180, 0.22),
+    inset -4px -4px 9px rgba(255, 255, 255, 0.85), 0 0 0 2px #87ceeb;
+}
+
+.btn-primary {
+  @apply w-full text-sm font-medium text-white p-[10px] rounded-xl my-1 transition-shadow duration-200;
+  background-color: var(--color-brand-blue);
+  box-shadow: 4px 4px 10px rgba(70, 130, 180, 0.28),
+    -4px -4px 10px rgba(255, 255, 255, 0.85);
+}
+
+.btn-primary:hover {
+  background-color: #3e76a4;
+}
+
+.btn-primary:active {
+  box-shadow: inset 3px 3px 7px rgba(45, 95, 135, 0.4),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.6);
+}
+
+.card {
+  @apply bg-[#E0FFFF] p-6 rounded-3xl;
+  box-shadow: 8px 8px 18px rgba(70, 130, 180, 0.22),
+    -8px -8px 18px rgba(255, 255, 255, 0.9);
+}
+
+.card-btn {
+  @apply flex items-center gap-2 text-[12px] font-medium bg-brand-blue-pale px-4 py-1.5 rounded-lg cursor-pointer transition-shadow duration-200;
+  color: var(--color-brand-blue);
+  box-shadow: 3px 3px 7px rgba(70, 130, 180, 0.25),
+    -3px -3px 7px rgba(255, 255, 255, 0.9);
+}
+
+.card-btn:active {
+  box-shadow: inset 3px 3px 6px rgba(45, 95, 135, 0.38),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.7);
+}
+
+.add-btn {
+  @apply flex items-center gap-1.5 text-xs md:text-sm font-medium whitespace-nowrap bg-brand-blue-pale rounded-lg px-4 py-2 cursor-pointer transition-shadow duration-200;
+  color: var(--color-brand-blue);
+  box-shadow: 3px 3px 7px rgba(70, 130, 180, 0.25),
+    -3px -3px 7px rgba(255, 255, 255, 0.9);
+}
+
+.add-btn:active {
+  box-shadow: inset 3px 3px 6px rgba(45, 95, 135, 0.38),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.7);
+}
+
+.add-btn-fill {
+  color: white;
+  background-color: var(--color-brand-blue);
+}
